@@ -105,6 +105,9 @@ EOF
 
 $script->spurt($head . $body);
 
+SKIP: {
+  skip "skip tests if running under appveyor" if $ENV{APPVEYOR};
+
 # Start
 my $prefix = "$FindBin::Bin/../script";
 open(my $start, '-|', $^X, "$prefix/elzar", $script)
@@ -125,12 +128,6 @@ while ( ! $old_port ) {
   ($old_pid, $old_port) = _pid();
   sleep 1;
 }
-
-open(my $stop, '-|', $^X, "$prefix/elzar", $script, '-s'); # TODO REMOVE
-
-SKIP: {
-  skip "debug appveyor hang";
-
 
 # Application is alive
 my $ua = Mojo::UserAgent->new();
@@ -324,6 +321,7 @@ sub _pid {
 }
 
 sub _port { IO::Socket::INET->new(PeerAddr => '127.0.0.1', PeerPort => shift) }
+
 
 done_testing();
 
