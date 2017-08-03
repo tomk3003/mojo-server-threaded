@@ -43,7 +43,8 @@ WriteMakefile(
         'Test::More' => 0,
     },
     PREREQ_PM => {
-        Mojolicious => 7.35,
+        Mojolicious      => 7.35,
+        'Win32::Process' => 0.14,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Mojo-Server-Threaded-*' },

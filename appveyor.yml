@@ -1,9 +1,14 @@
+skip_tags: true
+cache:
+  - C:\strawberry
+
 install:
-  - path C:\MinGW\bin;C:\Perl\site\bin;C:\Perl\bin;C:\Windows\System32;C:\Program Files\7-Zip;C:\Program Files (x86)\CMake\bin;C:\Program Files\AppVeyor\BuildAgent
+  - if not exist "C:\strawberry" cinst strawberryperl
+  - path C:\MinGW\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin;C:\strawberry\c\bin;C:\Windows\System32;C:\Program Files\7-Zip;C:\Program Files (x86)\CMake\bin;C:\Program Files\AppVeyor\BuildAgent
+  - perl -V
 
   # Install Perl prereqs
-  - ppm install Mojolicious
-  - ppm install Win32::Process
+  - cpanm --installdeps .
 
 test_script:
   - prove -m -v
