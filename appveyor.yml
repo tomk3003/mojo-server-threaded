@@ -1,0 +1,11 @@
+install:
+  - path C:\MinGW\bin;C:\Perl\site\bin;C:\Perl\bin;C:\Windows\System32;C:\Program Files\7-Zip;C:\Program Files (x86)\CMake\bin;C:\Program Files\AppVeyor\BuildAgent
+
+  # Install Perl prereqs
+  - ppm install Mojolicious
+  - ppm install Win32::Process
+
+test_script:
+  - prove -m -v
+
+build: off
