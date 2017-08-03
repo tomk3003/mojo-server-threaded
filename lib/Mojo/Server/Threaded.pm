@@ -294,7 +294,7 @@ sub _worker {
     if ( $self->{QUIT} ) {
       delete $self->{QUIT};
       $trace && $log->debug("Worker $tid: got QUIT");
-      $self->max_requests(1)->close_idle_connections;
+      $self->max_requests(1);
       $loop->stop_gracefully;
       $finished = 1;
       $trace && $log->debug("Worker $tid: loop should end");

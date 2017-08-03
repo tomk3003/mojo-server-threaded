@@ -8,7 +8,7 @@ install:
   - perl -V
 
   # Install Perl prereqs
-  - cpanm --installdeps .
+  - cpanm --installdeps --notest  .
 
 test_script:
   - prove -m -v
