@@ -105,12 +105,11 @@ EOF
 
 $script->spurt($head . $body);
 
-SKIP: {
-  skip "debug appveyor hang";
-
 # Start
 my $prefix = "$FindBin::Bin/../script";
-open(my $start, '-|', $^X, "$prefix/elzar", $script);
+open(my $start, '-|', $^X, "$prefix/elzar", $script)
+    or BAIL_OUT("could not start script, $!");
+
 sleep 1;
 
 my $i = 0;
@@ -126,6 +125,12 @@ while ( ! $old_port ) {
   ($old_pid, $old_port) = _pid();
   sleep 1;
 }
+
+open(my $stop, '-|', $^X, "$prefix/elzar", $script, '-s'); # TODO REMOVE
+
+SKIP: {
+  skip "debug appveyor hang";
+
 
 # Application is alive
 my $ua = Mojo::UserAgent->new();
