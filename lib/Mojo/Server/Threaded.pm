@@ -274,7 +274,7 @@ sub _worker {
     'request' => sub { $log->debug("Worker $tid: handling request"); },
   );
 
-  weaken $self;
+  #weaken $self;
 
   my $cb = sub {
     $trace && $log->debug("Worker $tid: sending finished to manager") if $finished;

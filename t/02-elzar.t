@@ -51,7 +51,7 @@ use Mojo::UserAgent;
 }
 
 # Prepare script
-my $dir    = tempdir('elzXXXXX', CLEANUP => 0, DIR => 'c:/temp' );
+my $dir    = tempdir('elzXXXXX', CLEANUP => 1);
 my $script = $dir->child('myapp.pl');
 my $log    = $dir->child('mojo.log');
 my $port1  = Mojo::IOLoop::Server->generate_port;

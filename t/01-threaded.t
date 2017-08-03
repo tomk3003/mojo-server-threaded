@@ -4,7 +4,7 @@ use FindBin qw($Bin);
 use lib "$Bin/../lib";
 use Test::More;
 
-use Mojo::File qw(path tempdir);
+use Mojo::File qw(path);
 use Mojo::IOLoop::Server;
 use Mojo::Server::Threaded;
 use Mojo::UserAgent;
