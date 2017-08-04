@@ -176,7 +176,7 @@ $i = 0;
 while (1) {
   diag "wait for upgrade to fail, " . ++$i;
   my $ltxt = eval { $log->slurp };
-  last if $ltxt =~ qr/Zero downtime software upgrade failed/;
+  last if $ltxt and $ltxt =~ qr/Zero downtime software upgrade failed/;
   sleep 1;
 }
 
