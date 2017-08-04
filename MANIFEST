@@ -3,10 +3,10 @@ Changes
 README
 MANIFEST
 README.md
-examples\hello_world
-lib\Mojo\Server\Threaded.pm
-lib\Mojo\Server\Elzar.pm
-lib\Mojolicious\Command\threaded.pm
-t\02-elzar.t
-t\01-threaded.t
-script\elzar
+examples/hello_world
+lib/Mojo/Server/Threaded.pm
+lib/Mojo/Server/Elzar.pm
+lib/Mojolicious/Command/threaded.pm
+t/02-elzar.t
+t/01-threaded.t
+script/elzar

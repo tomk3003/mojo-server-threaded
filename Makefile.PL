@@ -19,7 +19,7 @@ WriteMakefile(
     VERSION_FROM     => 'lib/Mojo/Server/Threaded.pm',
     ABSTRACT_FROM    => 'lib/Mojo/Server/Threaded.pm',
     LICENSE          => 'artistic_2',
-    EXE_FILES        => ['bin/elzar'],
+    EXE_FILES        => ['script/elzar'],
     MIN_PERL_VERSION => 5.010001,
     META_MERGE   => {
         dynamic_config => 0,
