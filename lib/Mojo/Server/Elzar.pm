@@ -183,7 +183,7 @@ sub _stop {
 
 =head1 NAME
 
-Mojo::Server::Elzar - A windows multithreaded production web server!
+Mojo::Server::Elzar - A windows multithreaded production web server
 
 =head1 SYNOPSIS
 
@@ -248,6 +248,12 @@ workers by 2:
 
   $ elzar ./myapp.pl -c "WORKERS -2"
   Sent command 'WORKERS -2'!
+
+=head1 CAVEATS
+
+L<Mojo::Server::Elzar> is new and should not be considered ready for
+production yet. Please report any issues on github
+L<https://github.com/tomk3003/mojo-server-threaded/issues>
 
 =head1 SEE ALSO
 
