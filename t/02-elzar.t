@@ -9,6 +9,7 @@ use Mojo::File 'tempdir';
 use Mojo::IOLoop::Server;
 use Mojo::Server::Elzar;
 use Mojo::UserAgent;
+use Win32::Process qw(:DEFAULT STILL_ACTIVE);
 
 # Configure
 {
@@ -51,11 +52,12 @@ use Mojo::UserAgent;
 }
 
 # Prepare script
-my $dir    = tempdir('elzXXXXX', CLEANUP => 1);
-my $script = $dir->child('myapp.pl');
-my $log    = $dir->child('mojo.log');
-my $port1  = Mojo::IOLoop::Server->generate_port;
-my $port2  = Mojo::IOLoop::Server->generate_port;
+my $dir     = tempdir('elzXXXXX', CLEANUP => 1);
+my $script  = $dir->child('myapp.pl');
+my $log     = $dir->child('mojo.log');
+my $port1   = Mojo::IOLoop::Server->generate_port;
+my $port2   = Mojo::IOLoop::Server->generate_port;
+my @spawned;
 
 my $head = <<EOF;
 use Mojolicious::Lite;
@@ -105,13 +107,10 @@ EOF
 
 $script->spurt($head . $body);
 
-SKIP: {
-  skip "skip tests if running under appveyor" if $ENV{APPVEYOR};
-
 # Start
 my $prefix = "$FindBin::Bin/../script";
-open(my $start, '-|', $^X, "$prefix/elzar", $script)
-    or BAIL_OUT("could not start script, $!");
+
+push @spawned, _spawn($script) || BAIL_OUT("couldn't spawn script");
 
 sleep 1;
 
@@ -162,6 +161,18 @@ ok $tx->keep_alive,  'connection will be kept alive';
 ok $tx->kept_alive,  'connection was kept alive';
 is $tx->res->code, 200, 'right status';
 is $tx->res->body, 'Hello Elzar!', 'right content';
+
+push @spawned, _spawn($script, "-c KILL") || BAIL_OUT("couldn't spawn script");
+
+$i = 0;
+while ( _port($port2) ) {
+  diag "wait for server shutdown, " . ++$i;
+  sleep 1;
+}
+
+SKIP: {
+  skip "tests if running under appveyor" if $ENV{APPVEYOR};
+
 
 # Update script (broken)
 $script->spurt(<<'EOF');
@@ -314,6 +325,8 @@ like $log, qr/Upgrade successful, stopping server with port $old_port/, 'right m
 
 } # END SKIP
 
+_kill(@spawned);
+
 sub _pid {
   local $/ = undef;
   return undef unless open my $file, '<', $dir->child('elzar.pid');
@@ -322,6 +335,22 @@ sub _pid {
 
 sub _port { IO::Socket::INET->new(PeerAddr => '127.0.0.1', PeerPort => shift) }
 
+sub _spawn {
+  my $script = shift;
+  my $prefix = "$FindBin::Bin/../script";
+  my $cmd    = qq("$^X" "$prefix/elzar" "$script" ) . join(' ', @_);
+  diag("running >>$cmd<<");
+  Win32::Process::Create(my $obj, $^X, $cmd, 0, NORMAL_PRIORITY_CLASS, '.');
+  warn Win32::FormatMessage(Win32::GetLastError()) unless $obj;
+  return $obj;
+}
+
+sub _kill {
+  for my $obj ( @_ ) {
+    $obj->GetExitCode(my $ec);
+    $obj->Kill(0) if $ec == STILL_ACTIVE;
+  }
+}
 
 done_testing();
 

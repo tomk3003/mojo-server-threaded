@@ -10,12 +10,11 @@ cache:
 install:
   - if not exist "C:\strawberry" cinst strawberryperl
   - path C:\MinGW\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin;C:\strawberry\c\bin;C:\Windows\System32;C:\Program Files\7-Zip;C:\Program Files (x86)\CMake\bin;C:\Program Files\AppVeyor\BuildAgent
-  - perl -V
 
   # Install Perl prereqs
   - cpanm --installdeps --notest  .
 
 test_script:
-  - prove -m -v
+  - prove -l -m -v
 
 build: off
