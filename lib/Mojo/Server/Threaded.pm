@@ -17,7 +17,7 @@ use Time::HiRes qw(time sleep);
 
 has accepts            => 10000;
 has cleanup            => 1;
-has graceful_timeout   => 60;
+has graceful_timeout   => 120;
 has heartbeat_timeout  => 30;
 has heartbeat_interval => 5;
 has pid_file           => sub { path(tmpdir, 'threaded.pid')->to_string };
