@@ -108,7 +108,6 @@ EOF
 $script->spurt($head . $body);
 
 # Start
-my $prefix = "$FindBin::Bin/../script";
 
 push @spawned, _spawn($script) || BAIL_OUT("couldn't spawn script");
 
@@ -162,18 +161,6 @@ ok $tx->kept_alive,  'connection was kept alive';
 is $tx->res->code, 200, 'right status';
 is $tx->res->body, 'Hello Elzar!', 'right content';
 
-push @spawned, _spawn($script, "-c KILL") || BAIL_OUT("couldn't spawn script");
-
-$i = 0;
-while ( _port($port2) ) {
-  diag "wait for server shutdown, " . ++$i;
-  sleep 1;
-}
-
-SKIP: {
-  skip "tests if running under appveyor" if $ENV{APPVEYOR};
-
-
 # Update script (broken)
 $script->spurt(<<'EOF');
 use Mojolicious::Lite;
@@ -182,7 +169,7 @@ die if $ENV{ELZAR_PORT};
 
 app->start;
 EOF
-open(my $hot_deploy, '-|', $^X, "$prefix/elzar", $script);
+push @spawned, _spawn($script) || BAIL_OUT("couldn't spawn script");
 
 # Wait for hot deployment to fail
 $i = 0;
@@ -239,7 +226,7 @@ EOF
 
 $script->spurt($head . $body);
 
-open($hot_deploy, '-|', $^X, "$prefix/elzar", $script);
+push @spawned, _spawn($script) || BAIL_OUT("couldn't spawn script");
 
 $i = 0;
 while (1) {
@@ -306,7 +293,7 @@ is $tx->res->code, 200, 'right status';
 is $tx->res->body, $second, 'same content';
 
 # Stop
-open(my $stop, '-|', $^X, "$prefix/elzar", $script, '-s');
+push @spawned, _spawn($script, '-s') || BAIL_OUT("couldn't spawn script");
 
 $i = 0;
 while ( _port($port2) ) {
@@ -323,8 +310,7 @@ like $log, qr/Starting zero downtime software upgrade \(10 seconds\)/,
   'right message';
 like $log, qr/Upgrade successful, stopping server with port $old_port/, 'right message';
 
-} # END SKIP
-
+# cleanup
 _kill(@spawned);
 
 sub _pid {
