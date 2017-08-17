@@ -1,7 +1,7 @@
 package Mojo::Server::Threaded;
 use Mojo::Base 'Mojo::Server::Daemon';
 
-our $VERSION = 0.10;
+our $VERSION = 0.2;
 
 use threads('stack_size' => 64*4096);
 use Thread::Queue;
@@ -487,7 +487,7 @@ L<Mojo::Server::Prefork> and implements the following new ones.
   my $interval = $threaded->manage_interval;
   $threaded    = $threaded->manage_interval(0.5);
 
-Check interval for the management port in seconds, defaults to C<1>.
+Check interval for the management port in seconds, defaults to C<0.1>.
 
 =head1 METHODS
 

@@ -1,5 +1,7 @@
 use Mojo::Base -strict;
 
+BEGIN { $ENV{MOJO_REACTOR} = 'Mojo::Reactor::Poll' }
+
 use FindBin qw($Bin);
 use lib "$Bin/../lib";
 use Test::More;
