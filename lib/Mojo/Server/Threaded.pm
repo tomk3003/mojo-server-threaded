@@ -471,7 +471,7 @@ and implements the following new ones.
 
   $threaded->on(command => sub {
     my($threaded, $command, @params) = @_;
-    say "got command $command on mamagement port";
+    say "got command $command on management port";
     ...
   });
 
