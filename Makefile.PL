@@ -46,6 +46,7 @@ WriteMakefile(
         Mojolicious      => 7.35,
         'Win32::Process' => 0.14,
         'IO::Socket::IP' => 0.37,
+        'YAML::Any'      => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Mojo-Server-Threaded-*' },
