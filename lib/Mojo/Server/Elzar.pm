@@ -7,7 +7,6 @@ use Mojo::Server::Threaded;
 use Mojo::Util 'steady_time';
 use Scalar::Util 'weaken';
 use Win32::Process;
-use YAML::Any qw(Dump);
 
 our $VERSION = $Mojo::Server::Threaded::VERSION;
 
