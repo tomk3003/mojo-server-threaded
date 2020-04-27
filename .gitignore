@@ -19,3 +19,4 @@ Mojo-Server-Threaded-*.tar.gz
 .settings/
 *.log
 *.pid
+.idea/

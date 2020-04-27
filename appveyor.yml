@@ -2,8 +2,8 @@ skip_tags: true
 
 shallow_clone: true
 
-#cache:
-#  - C:\strawberry
+cache:
+  - C:\strawberry
 
 install:
   - if not exist "C:\strawberry" cinst strawberryperl
